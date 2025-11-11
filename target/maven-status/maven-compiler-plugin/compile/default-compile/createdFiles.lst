@@ -46,7 +46,6 @@ de\luca\plugin\PermsGUIListener$1.class
 de\luca\plugin\StatsCommand.class
 de\luca\plugin\AfkPlugin.class
 de\luca\plugin\ServerSettingsListener.class
-de\luca\plugin\RestartCommand$1.class
 de\luca\plugin\CustomSpawnEggRecipe.class
 de\luca\plugin\LucaCrafterPlugin.class
 de\luca\plugin\RoleManager.class
