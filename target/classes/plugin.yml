@@ -1,0 +1,38 @@
+name: LucaCrafterPlugin
+main: de.luca.plugin.LucaCrafterPlugin
+version: 1.2
+api-version: 1.21
+author: Luca
+description: LucaCrafter's all-in-one Plugin
+
+commands:
+  baum:
+    description: Baum-System
+  erz:
+    description: Erz-System
+  stats:
+    description: Zeigt Statistiken an
+  afk:
+    description: Schaltet AFK-Modus ein/aus
+  antigrief:
+    description: Aktiviert das Anti-Grief- bzw. Anti-Creeper-System
+  perms:
+    description: Öffnet die Rollen- & Rechteverwaltung (GUI)
+    usage: /perms
+    permission: lucacrafter.perms.manage
+  craftgui:
+    description: Öffnet das Custom Crafting Menü
+    usage: /craftgui
+  settings:
+    description: Öffnet das Einstellungsmenü (Server & Spieler)
+    usage: /settings
+    permission: lucacrafter.settings
+  server:
+    description: Öffnet das Server-Einstellungsmenü
+    usage: /server
+
+permissions:
+  lucacrafter.perms.manage:
+    description: Darf das Rollen-/Rechte-GUI verwalten
+    default: op
+

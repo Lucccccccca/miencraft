@@ -1,0 +1,31 @@
+roles:
+  spieler:
+    display: "&7Spieler"
+    permissions:
+      - baum.use
+      - erz.use
+      - stats.view
+      - magnet.toggle
+      - furnace.fast
+
+  vip:
+    display: "&bVIP"
+    permissions:
+      - baum.use
+      - erz.use
+      - stats.view
+      - afk.use
+
+  moderator:
+    display: "&aModerator"
+    permissions:
+      - baum.use
+      - erz.use
+      - stats.view
+      - afk.use
+      - plugin.perms
+
+  admin:
+    display: "&cAdmin"
+    permissions:
+      - "*"
