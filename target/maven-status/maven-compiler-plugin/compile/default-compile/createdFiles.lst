@@ -28,7 +28,6 @@ de\luca\plugin\SettingsPlayerGUI.class
 de\luca\plugin\MagnetListener.class
 de\luca\plugin\PermissionUpdater.class
 de\luca\plugin\FastFurnaceListener$1.class
-de\luca\plugin\RestartCommand.class
 de\luca\plugin\AntiGriefCommand.class
 de\luca\plugin\SettingsMainGUI.class
 de\luca\plugin\PermsRoleGUI.class
@@ -50,6 +49,7 @@ de\luca\plugin\CustomSpawnEggRecipe.class
 de\luca\plugin\LucaCrafterPlugin.class
 de\luca\plugin\RoleManager.class
 de\luca\plugin\ErzListener.class
+de\luca\plugin\RestartServerCommand.class
 de\luca\plugin\AntiCreeperListener.class
 de\luca\plugin\SettingsGUIListener.class
 de\luca\plugin\BaumCommand.class

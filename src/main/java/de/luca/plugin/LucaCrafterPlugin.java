@@ -100,25 +100,9 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(afkCommand, this);
 
 
-try {
-    // Zugriff auf die interne CommandMap
-    org.bukkit.command.SimpleCommandMap commandMap = (org.bukkit.command.SimpleCommandMap)
-            Bukkit.getServer().getClass().getMethod("getCommandMap").invoke(Bukkit.getServer());
+        getCommand("restartserver").setExecutor(new RestartServerCommand(this));
 
-    // Alten /restart-Befehl entfernen
-    org.bukkit.command.Command oldRestart = commandMap.getCommand("restart");
-    if (oldRestart != null) {
-        oldRestart.unregister(commandMap);
-        getLogger().info("🧹 Alter Spigot-/restart-Command erfolgreich entfernt.");
-    }
 
-    // Deinen eigenen RestartCommand direkt registrieren
-    org.bukkit.command.Command newRestart = new RestartCommand(this);
-    commandMap.register("LucaCrafterPlugin", newRestart);
-    getLogger().info("⚡ Neuer /restart-Command vom LucaCrafterPlugin wurde registriert.");
-} catch (Exception e) {
-    getLogger().warning("⚠️ Konnte /restart nicht neu registrieren: " + e.getMessage());
-}
 
 
         // 🧑‍💼 Perms

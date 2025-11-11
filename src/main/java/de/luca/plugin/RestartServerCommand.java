@@ -4,26 +4,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RestartCommand extends Command {
+public class RestartServerCommand implements CommandExecutor {
 
     private final LucaCrafterPlugin plugin;
     private boolean isRestarting = false;
 
-    public RestartCommand(LucaCrafterPlugin plugin) {
-        super("restart");
+    public RestartServerCommand(LucaCrafterPlugin plugin) {
         this.plugin = plugin;
-        this.setDescription("Startet den Server mit Countdown neu");
-        this.setUsage("/restart [Sekunden]");
-        this.setPermission("lucacrafter.server.restart");
     }
 
     @Override
-    public boolean execute(CommandSender sender, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("lucacrafter.server.restart")) {
             sender.sendMessage(ChatColor.RED + "❌ Du hast keine Berechtigung für diesen Befehl!");
             return true;
@@ -34,7 +31,7 @@ public class RestartCommand extends Command {
             return true;
         }
 
-        int seconds = 10; // Standardzeit
+        int seconds = 10;
         if (args.length > 0) {
             try {
                 seconds = Integer.parseInt(args[0]);
@@ -46,13 +43,10 @@ public class RestartCommand extends Command {
 
         isRestarting = true;
         AtomicInteger countdown = new AtomicInteger(seconds);
-
         Bukkit.broadcastMessage(ChatColor.GOLD + "🔁 Server-Neustart in " + ChatColor.YELLOW + seconds + " Sekunden...");
 
-        // Countdown-Task
         Bukkit.getScheduler().runTaskTimer(plugin, task -> {
             int current = countdown.getAndDecrement();
-
             if (current <= 0) {
                 Bukkit.broadcastMessage(ChatColor.RED + "🔄 Der Server wird jetzt neu gestartet!");
                 for (Player p : Bukkit.getOnlinePlayers()) {
@@ -62,15 +56,12 @@ public class RestartCommand extends Command {
                 Bukkit.shutdown();
                 return;
             }
-
-            // Countdown-Ansage
             if (current <= 10 || current % 5 == 0) {
                 Bukkit.broadcastMessage(ChatColor.YELLOW + "⚠️ Server-Neustart in " + ChatColor.GOLD + current + ChatColor.YELLOW + " Sekunden...");
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
                 }
             }
-
         }, 0L, 20L);
 
         return true;
