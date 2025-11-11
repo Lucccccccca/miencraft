@@ -8,12 +8,20 @@ description: LucaCrafter's all-in-one Plugin
 commands:
   baum:
     description: Baum-System
+    usage: /baum
+    permission: lucacrafter.baum.use
   erz:
     description: Erz-System
+    usage: /erz
+    permission: lucacrafter.erz.use
   stats:
     description: Zeigt Statistiken an
+    usage: /stats
+    permission: lucacrafter.stats.use
   afk:
     description: Schaltet AFK-Modus ein/aus
+    usage: /afk
+    permission: lucacrafter.afk.use
   antigrief:
     description: Aktiviert das Anti-Grief- bzw. Anti-Creeper-System
   perms:
@@ -23,16 +31,54 @@ commands:
   craftgui:
     description: Öffnet das Custom Crafting Menü
     usage: /craftgui
+    permission: lucacrafter.craftgui.use
   settings:
     description: Öffnet das Einstellungsmenü (Server & Spieler)
     usage: /settings
-    permission: lucacrafter.settings
+    permission: lucacrafter.settings.open
   server:
     description: Öffnet das Server-Einstellungsmenü
     usage: /server
+    permission: lucacrafter.server.open
 
 permissions:
+  lucacrafter.baum.use:
+    description: Erlaubt das Öffnen des Baum-Systems
+    default: true
+  lucacrafter.erz.use:
+    description: Erlaubt das Öffnen des Erz-Systems
+    default: true
+  lucacrafter.stats.use:
+    description: Erlaubt das Öffnen der Statistik-GUI
+    default: true
+  lucacrafter.afk.use:
+    description: Erlaubt die Nutzung des AFK-Kommandos
+    default: true
+  lucacrafter.craftgui.use:
+    description: Erlaubt das Öffnen des Custom-Crafting-Menüs
+    default: true
+  lucacrafter.settings.open:
+    description: Erlaubt das Öffnen des Spieler-Einstellungsmenüs
+    default: false
+  lucacrafter.server.open:
+    description: Erlaubt das Öffnen des Server-Einstellungsmenüs
+    default: op
+  lucacrafter.autopickup:
+    description: Erlaubt die Nutzung von Auto-Pickup
+    default: false
+  lucacrafter.magnet:
+    description: Erlaubt die Nutzung des Magnet-Systems
+    default: false
+  lucacrafter.fastfurnace:
+    description: Erlaubt die Nutzung des Schnellofen-Systems
+    default: false
+  lucacrafter.antigrief.toggle:
+    description: Darf Anti-Grief-Einstellungen umschalten
+    default: op
   lucacrafter.perms.manage:
     description: Darf das Rollen-/Rechte-GUI verwalten
     default: op
-
+  restart:
+    description: Startet einen Server-Neustart mit Countdown
+    usage: /restart [Sekunden]
+    permission: lucacrafter.server.restart

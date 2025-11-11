@@ -7,11 +7,15 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+/**
+ * Dieses Listener sorgt dafür, dass bestimmte Blöcke immer ihren eigenen Block droppen.
+ * Beim Abbau einer Endertruhe wird durch setDropItems(false) verhindert,
+ * dass das normale Obsidian-Augenschienen-Rezept droppt.
+ */
 public class AlwaysDropListener implements Listener {
 
     private final LucaCrafterPlugin plugin;
 
-    // ✅ Konstruktor hinzufügen!
     public AlwaysDropListener(LucaCrafterPlugin plugin) {
         this.plugin = plugin;
     }
@@ -21,7 +25,7 @@ public class AlwaysDropListener implements Listener {
         Block block = e.getBlock();
         Player p = e.getPlayer();
 
-        // Diese Blöcke sollen IMMER droppen
+        // Diese Blöcke sollen IMMER ihren eigenen Block droppen
         Material type = block.getType();
         if (type == Material.GLASS ||
             type == Material.GLASS_PANE ||
@@ -32,6 +36,8 @@ public class AlwaysDropListener implements Listener {
             type == Material.LANTERN ||
             type == Material.SHROOMLIGHT) {
 
+            // Verhindere Standard-Drops (z. B. Obsidian bei Endertruhen)
+            e.setDropItems(false);
             block.getWorld().dropItemNaturally(block.getLocation(), new org.bukkit.inventory.ItemStack(type));
         }
     }

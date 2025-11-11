@@ -3,7 +3,7 @@ package de.luca.plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+    import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +17,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
+/**
+ * Kommando für das Erz-System. Öffnet ein GUI zur Steuerung des Erzen-Features.
+ * Nach dem Öffnen bekommt der Spieler eine Chat-Meldung als Bestätigung.
+ */
 public class ErzCommand implements CommandExecutor, Listener {
 
     private final LucaCrafterPlugin plugin;
@@ -30,6 +34,8 @@ public class ErzCommand implements CommandExecutor, Listener {
         if (!(sender instanceof Player p)) return true;
 
         openErzMenu(p);
+        // Chat-Bestätigung
+        p.sendMessage(ChatColor.AQUA + "⛏ Das Erz-System-Menü wurde geöffnet.");
         return true;
     }
 
@@ -112,6 +118,10 @@ public class ErzCommand implements CommandExecutor, Listener {
             it.setItemMeta(meta);
         }
         return it;
+    }
+
+    private ItemStack make(Material mat, String name) {
+        return make(mat, name, "");
     }
 
     private String formatName(String key) {

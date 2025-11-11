@@ -22,6 +22,7 @@ C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SettingsListen
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CraftMainGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\ConfigManager.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermissionUpdater.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CraftGUIListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\FarmProtectListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\AfkPlugin.java
@@ -35,6 +36,7 @@ C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsGUIListen
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\AlwaysDropListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\BaumCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsMainGUI.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\RestartCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CraftGUICommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CustomSpawnEggRecipe.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SettingsPlayerGUI.java

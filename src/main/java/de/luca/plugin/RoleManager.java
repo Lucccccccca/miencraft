@@ -7,13 +7,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Verwalten von Rollen, deren Permissions und Zuordnung zu Spielern.
+ * Ruft nach Änderungen den PermissionUpdater auf, um die Berechtigungen zu aktualisieren.
+ */
 public class RoleManager {
 
     private final LucaCrafterPlugin plugin;
     private final File file;
     private final FileConfiguration cfg;
 
-    // Cache
+    // Caches
     private final Map<String, Set<String>> rolePerms = new LinkedHashMap<>();
     private final Map<UUID, String> playerRoles = new HashMap<>();
 
@@ -28,30 +32,33 @@ public class RoleManager {
         plugin.getLogger().info("✅ Rollen geladen: " + getAllRoles());
     }
 
-
-        
-
     private void ensureDefaults() {
-        if (!rolePerms.containsKey("spieler")) {
-            rolePerms.put("spieler", new HashSet<>(List.of(
-                    "lucacrafter.craftgui.use",
-                    "lucacrafter.stats.use"
-            )));
-        }
+        // Standardrollen definieren
+        rolePerms.putIfAbsent("spieler", new HashSet<>(List.of(
+                "lucacrafter.craftgui.use",
+                "lucacrafter.stats.use",
+                "lucacrafter.baum.use",
+                "lucacrafter.erz.use",
+                "lucacrafter.afk.use"
+        )));
         rolePerms.putIfAbsent("vip", new HashSet<>(List.of(
-                "lucacrafter.autopickup"
+                "lucacrafter.autopickup",
+                "lucacrafter.magnet",
+                "lucacrafter.fastfurnace"
         )));
         rolePerms.putIfAbsent("moderator", new HashSet<>(List.of(
-                "lucacrafter.perms.manage"
+                "lucacrafter.perms.manage",
+                "lucacrafter.settings.open",
+                "lucacrafter.server.open"
         )));
         rolePerms.putIfAbsent("admin", new HashSet<>(List.of(
                 "lucacrafter.perms.manage",
                 "lucacrafter.antigrief.toggle",
-                "lucacrafter.settings.open"
+                "lucacrafter.settings.open",
+                "lucacrafter.server.open",
+                "lucacrafter.server.restart"
         )));
     }
-
-    /* ================= Load/Save ================= */
 
     private void load() {
         // Rollen
@@ -61,7 +68,7 @@ public class RoleManager {
                 rolePerms.put(role, set);
             }
         }
-        // Player→Rolle
+        // Spieler→Rolle
         if (cfg.isConfigurationSection("players")) {
             for (String key : cfg.getConfigurationSection("players").getKeys(false)) {
                 try {
@@ -100,6 +107,7 @@ public class RoleManager {
         if (n.isEmpty() || rolePerms.containsKey(n)) return false;
         rolePerms.put(n, new HashSet<>());
         save();
+        plugin.getPermissionUpdater().refreshAllPlayers();
         return true;
     }
 
@@ -115,6 +123,7 @@ public class RoleManager {
             }
         }
         save();
+        plugin.getPermissionUpdater().refreshAllPlayers();
         return true;
     }
 
@@ -125,11 +134,13 @@ public class RoleManager {
     public void addPermissionToRole(String role, String node) {
         getRolePermissions(role).add(node);
         save();
+        plugin.getPermissionUpdater().refreshAllPlayers();
     }
 
     public void removePermissionFromRole(String role, String node) {
         getRolePermissions(role).remove(node);
         save();
+        plugin.getPermissionUpdater().refreshAllPlayers();
     }
 
     public String getRole(UUID player) {
@@ -140,9 +151,9 @@ public class RoleManager {
         if (!rolePerms.containsKey(role)) role = "spieler";
         playerRoles.put(player, role);
         save();
+        plugin.getPermissionUpdater().refreshAllPlayers();
     }
 
-    // Nützlich, falls du irgendwo prüfen willst:
     public boolean roleHas(String role, String node) {
         return getRolePermissions(role).contains(node);
     }
@@ -151,8 +162,4 @@ public class RoleManager {
         String r = getRole(player);
         return roleHas(r, node);
     }
-
-
-    
-
 }

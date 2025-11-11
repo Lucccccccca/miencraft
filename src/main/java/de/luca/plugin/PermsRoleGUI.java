@@ -3,23 +3,31 @@ package de.luca.plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
+/**
+ * GUI zur Anzeige und Änderung der Permission-Nodes einer Rolle.
+ */
 public class PermsRoleGUI {
 
     public static final String TITLE_PREFIX = "§9Rolle: ";
     private final LucaCrafterPlugin plugin;
     private final String role;
 
-    // Bekannte Perm-Knoten deines Plugins (erweiterbar)
+    /**
+     * Hier müssen alle verfügbaren Permission-Nodes deines Plugins eingetragen werden,
+     * damit sie im Rollenmenü angezeigt und getoggelt werden können.
+     */
     public static final List<String> KNOWN_NODES = List.of(
-            // Quality-of-Life
+            // QoL
             "lucacrafter.autopickup",
             "lucacrafter.magnet",
             "lucacrafter.fastfurnace",
+
             // Systeme / Befehle
             "lucacrafter.baum.use",
             "lucacrafter.erz.use",
@@ -27,9 +35,13 @@ public class PermsRoleGUI {
             "lucacrafter.afk.use",
             "lucacrafter.craftgui.use",
             "lucacrafter.settings.open",
+            "lucacrafter.server.open",
+            "lucacrafter.server.restart",
+
             // Admin
             "lucacrafter.antigrief.toggle",
-            "lucacrafter.perms.manage"
+            "lucacrafter.perms.manage",
+            "lucacrafter.server.restart"
     );
 
     public PermsRoleGUI(LucaCrafterPlugin plugin, String role) {
