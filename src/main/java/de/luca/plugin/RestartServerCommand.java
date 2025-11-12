@@ -43,25 +43,44 @@ public class RestartServerCommand implements CommandExecutor {
 
         isRestarting = true;
         AtomicInteger countdown = new AtomicInteger(seconds);
+
         Bukkit.broadcastMessage(ChatColor.GOLD + "🔁 Server-Neustart in " + ChatColor.YELLOW + seconds + " Sekunden...");
 
         Bukkit.getScheduler().runTaskTimer(plugin, task -> {
             int current = countdown.getAndDecrement();
+
             if (current <= 0) {
                 Bukkit.broadcastMessage(ChatColor.RED + "🔄 Der Server wird jetzt neu gestartet!");
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1f, 1f);
+                    p.kickPlayer(ChatColor.RED + "Der Server wird neu gestartet und aktualisiert.\nBitte in 30 Sekunden erneut verbinden!");
                 }
+
                 task.cancel();
-                Bukkit.shutdown();
+
+                plugin.getLogger().warning("⚡ Erzwinge Neustart über Crash-Exit …");
+
+                // Warte 2 Sekunden, um Speicherungen zuzulassen
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    try {
+                        Bukkit.getServer().savePlayers();
+                    } catch (Exception ignored) {}
+                    plugin.getLogger().warning("💥 Erzwinge harten Prozessabbruch (Crash-Trigger)!");
+                    Runtime.getRuntime().halt(1); // härter als System.exit(1)
+                }, 40L); // 2 Sekunden Verzögerung (40 Ticks)
+
                 return;
             }
+
+            // Countdown-Anzeige + Sound
             if (current <= 10 || current % 5 == 0) {
-                Bukkit.broadcastMessage(ChatColor.YELLOW + "⚠️ Server-Neustart in " + ChatColor.GOLD + current + ChatColor.YELLOW + " Sekunden...");
+                Bukkit.broadcastMessage(ChatColor.YELLOW + "⚠️ Server-Neustart in "
+                        + ChatColor.GOLD + current + ChatColor.YELLOW + " Sekunden...");
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1f, 1f);
                 }
             }
+
         }, 0L, 20L);
 
         return true;

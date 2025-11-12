@@ -40,12 +40,10 @@ commands:
     description: Öffnet das Server-Einstellungsmenü
     usage: /server
     permission: lucacrafter.server.open
-commands:
   restartserver:
     description: Startet den Server mit Countdown neu
     usage: /restartserver [Sekunden]
     permission: lucacrafter.server.restart
-
 
 permissions:
   lucacrafter.baum.use:
@@ -85,5 +83,5 @@ permissions:
     description: Darf das Rollen-/Rechte-GUI verwalten
     default: op
   lucacrafter.server.restart:
-    description: Darf den Server mit /restart neu starten
+    description: Darf den Server mit /restartserver neu starten
     default: op
