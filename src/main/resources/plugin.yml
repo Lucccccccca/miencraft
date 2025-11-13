@@ -60,10 +60,10 @@ permissions:
     default: true
   lucacrafter.craftgui.use:
     description: Erlaubt das Öffnen des Custom-Crafting-Menüs
-    default: true
+    default: op
   lucacrafter.settings.open:
     description: Erlaubt das Öffnen des Spieler-Einstellungsmenüs
-    default: false
+    default: true
   lucacrafter.server.open:
     description: Erlaubt das Öffnen des Server-Einstellungsmenüs
     default: op
