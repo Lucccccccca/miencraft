@@ -29,3 +29,10 @@ roles:
     display: "&cAdmin"
     permissions:
       - "*"
+
+
+prefixes:
+  spieler: ""
+  vip: "[VIP] "
+  moderator: "[Mod] "
+  admin: "[Admin] "

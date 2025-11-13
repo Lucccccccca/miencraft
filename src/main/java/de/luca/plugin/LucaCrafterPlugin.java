@@ -14,6 +14,9 @@ public final class LucaCrafterPlugin extends JavaPlugin {
     private RoleManager roleManager;
     private RecipeStorage recipeStorage;
     private PermissionUpdater permissionUpdater;
+    private PrefixUpdater prefixUpdater;
+    public PrefixUpdater getPrefixUpdater() { return prefixUpdater; }
+
 
     public static LucaCrafterPlugin getInstance() {
         return instance;
@@ -55,6 +58,22 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         getCommand("baum").setExecutor(baumCommand);
         Bukkit.getPluginManager().registerEvents(baumCommand, this);
         Bukkit.getPluginManager().registerEvents(new BaumListener(this, baumCommand), this);
+
+
+            // Prefix-System
+        PrefixUpdater prefix = new PrefixUpdater(this);
+        this.prefixUpdater = prefix;
+        Bukkit.getPluginManager().registerEvents(prefix, this);
+
+        // Permission-Inspector
+        getCommand("permcheck").setExecutor(new PermissionInspectorCommand());
+
+        // Rollen-Reload
+        getCommand("permsreload").setExecutor(new PermsReloadCommand(this));
+
+        // Automatische Permission-Erkennung
+        PermissionFinder.scanAndFill(this);
+
 
         // ⛏ Erz-System
         ErzCommand erzCommand = new ErzCommand(this);

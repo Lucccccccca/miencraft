@@ -44,6 +44,14 @@ commands:
     description: Startet den Server mit Countdown neu
     usage: /restartserver [Sekunden]
     permission: lucacrafter.server.restart
+    permsreload:
+    description: Rollen & Rechte neu laden
+    usage: /permsreload
+    permission: lucacrafter.perms.manage
+  permcheck:
+    description: Zeigt Rechte eines Spielers
+    usage: /permcheck <Spieler>
+    permission: lu
 
 permissions:
   lucacrafter.baum.use:
@@ -84,4 +92,10 @@ permissions:
     default: op
   lucacrafter.server.restart:
     description: Darf den Server mit /restartserver neu starten
+    default: op
+  lucacrafter.tab.prefix:
+    description: Erlaubt das Prefix-System
+    default: true
+  lucacrafter.permcheck.use:
+    description: Erlaubt Permission-Inspector
     default: op
