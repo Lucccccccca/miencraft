@@ -25,14 +25,15 @@ public class HomesAdminCommand implements CommandExecutor {
 
         Player admin = (Player) sender;
 
-        if (args.length != 1) {
-            admin.sendMessage("§eVerwendung: §7/homesadmin <Name>");
+        if (args.length == 1) {
+            // Alte Funktion: Homes eines Spielers anzeigen
+            OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+            admin.openInventory(new HomeAdminGUI(plugin, admin, target).getInventory());
             return true;
         }
 
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-
-        admin.openInventory(new HomeAdminGUI(plugin, admin, target).getInventory());
+        // Neues Admin-Hauptmenü
+        admin.openInventory(new HomeAdminMainGUI(plugin).getInventory());
         return true;
     }
 }

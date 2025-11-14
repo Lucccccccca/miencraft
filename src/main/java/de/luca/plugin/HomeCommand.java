@@ -15,13 +15,13 @@ public class HomeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§cNur Spieler können dieses Kommando nutzen.");
+            sender.sendMessage("Nur Spieler!");
             return true;
         }
 
         Player p = (Player) sender;
+
         p.openInventory(new HomeMainGUI(plugin, p).getInventory());
         return true;
     }

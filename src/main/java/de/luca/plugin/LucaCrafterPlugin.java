@@ -2,6 +2,7 @@ package de.luca.plugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LucaCrafterPlugin extends JavaPlugin {
@@ -21,8 +22,15 @@ public final class LucaCrafterPlugin extends JavaPlugin {
     // HOME-SYSTEM
     private HomeManager homeManager;
     private HomeMarkerTask homeMarkerTask;
-
+    private HomeTeleportLogic homeTeleportLogic;
+    private HomeTeleportHandler homeTeleportHandler;
+    private HomeHologramManager homeHologramManager;
     // ======= GETTERS ========
+
+    public HomeHologramManager getHomeHologramManager() {
+    return homeHologramManager;
+    }
+
     public static LucaCrafterPlugin getInstance() {
         return instance;
     }
@@ -55,6 +63,14 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         return homeManager;
     }
 
+    public HomeTeleportLogic getHomeTeleportLogic() {
+        return homeTeleportLogic;
+    }
+
+    public HomeTeleportHandler getHomeTeleportHandler() {
+        return homeTeleportHandler;
+    }
+
     @Override
     public void onEnable() {
 
@@ -80,9 +96,11 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(permissionUpdater, this);
 
         // ===============================
-        //  HOME-MANAGER + PARTIKEL-TASK
+        //  HOME-MANAGER + TELEPORT + PARTIKEL-TASK
         // ===============================
         homeManager = new HomeManager(this);
+        homeTeleportLogic = new HomeTeleportLogic(this);
+        homeTeleportHandler = new HomeTeleportHandler(this);
 
         // Zeichnet ggf. Partikelringe um Homes
         homeMarkerTask = new HomeMarkerTask(this, homeManager);
@@ -97,9 +115,9 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         }
 
         PrefixChatListener prefixChatListener = new PrefixChatListener(this);
-        Bukkit.getPluginManager().registerEvents(
-                new PrefixGUIListener(this, prefixChatListener), this);
-        Bukkit.getPluginManager().registerEvents(prefixChatListener, this);
+        PluginManager pm = Bukkit.getPluginManager();
+        pm.registerEvents(new PrefixGUIListener(this, prefixChatListener), this);
+        pm.registerEvents(prefixChatListener, this);
 
         // ===============================
         //  HOME-COMMANDS & LISTENER
@@ -118,8 +136,9 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         }
 
         // GUI + Teleport-Handling für Homes
-        Bukkit.getPluginManager().registerEvents(new HomeGUIListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new HomeTeleportHandler(this), this);
+        pm.registerEvents(new HomeGUIListener(this, homeTeleportHandler), this);
+        pm.registerEvents(homeTeleportHandler, this);
+        pm.registerEvents(new HomeAdminSettingsListener(this), this);
 
         // ===============================
         //  BAUM-SYSTEM
@@ -128,8 +147,8 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("baum") != null) {
             getCommand("baum").setExecutor(baumCommand);
         }
-        Bukkit.getPluginManager().registerEvents(baumCommand, this);
-        Bukkit.getPluginManager().registerEvents(new BaumListener(this, baumCommand), this);
+        pm.registerEvents(baumCommand, this);
+        pm.registerEvents(new BaumListener(this, baumCommand), this);
 
         // ===============================
         //  ERZ-SYSTEM
@@ -138,8 +157,8 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("erz") != null) {
             getCommand("erz").setExecutor(erzCommand);
         }
-        Bukkit.getPluginManager().registerEvents(erzCommand, this);
-        Bukkit.getPluginManager().registerEvents(new ErzListener(this, erzCommand), this);
+        pm.registerEvents(erzCommand, this);
+        pm.registerEvents(new ErzListener(this, erzCommand), this);
 
         // ===============================
         //  STATS-SYSTEM
@@ -148,13 +167,18 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("stats") != null) {
             getCommand("stats").setExecutor(statsCommand);
         }
-        Bukkit.getPluginManager().registerEvents(statsCommand, this);
+        pm.registerEvents(statsCommand, this);
 
         // ===============================
         //  FARM / ANTI-CREEPER
         // ===============================
-        Bukkit.getPluginManager().registerEvents(new FarmProtectListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new AntiCreeperListener(this), this);
+        pm.registerEvents(new FarmProtectListener(this), this);
+        pm.registerEvents(new AntiCreeperListener(this), this);
+
+
+        homeHologramManager = new HomeHologramManager(this);
+        pm.registerEvents(new HomeHologramJoinListener(this), this);
+
 
         // ===============================
         //  SETTINGS
@@ -162,7 +186,7 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("settings") != null) {
             getCommand("settings").setExecutor(new SettingsCommand(this));
         }
-        Bukkit.getPluginManager().registerEvents(new SettingsGUIListener(this), this);
+        pm.registerEvents(new SettingsGUIListener(this), this);
 
         // ===============================
         //  SERVER-SETTINGS
@@ -170,7 +194,7 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("server") != null) {
             getCommand("server").setExecutor(new ServerSettingsCommand(this));
         }
-        Bukkit.getPluginManager().registerEvents(new ServerSettingsListener(this), this);
+        pm.registerEvents(new ServerSettingsListener(this), this);
 
         // ===============================
         //  CUSTOM CRAFTING
@@ -179,23 +203,23 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("craftgui") != null) {
             getCommand("craftgui").setExecutor(new CraftGUICommand(this));
         }
-        Bukkit.getPluginManager().registerEvents(new CraftGUIListener(this), this);
+        pm.registerEvents(new CraftGUIListener(this), this);
 
         // ===============================
         //  FAST FURNACE
         // ===============================
-        Bukkit.getPluginManager().registerEvents(new FastFurnaceListener(this), this);
+        pm.registerEvents(new FastFurnaceListener(this), this);
 
         // ===============================
         //  MAGNET / AUTOPICKUP
         // ===============================
-        Bukkit.getPluginManager().registerEvents(new MagnetListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new AutoPickupListener(this), this);
+        pm.registerEvents(new MagnetListener(this), this);
+        pm.registerEvents(new AutoPickupListener(this), this);
 
         // ===============================
         //  ALWAYS DROP
         // ===============================
-        Bukkit.getPluginManager().registerEvents(new AlwaysDropListener(this), this);
+        pm.registerEvents(new AlwaysDropListener(this), this);
 
         // ===============================
         //  AFK-SYSTEM
@@ -204,7 +228,7 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("afk") != null) {
             getCommand("afk").setExecutor(afkCommand);
         }
-        Bukkit.getPluginManager().registerEvents(afkCommand, this);
+        pm.registerEvents(afkCommand, this);
 
         // ===============================
         //  RESTART-SYSTEM
@@ -220,7 +244,7 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         if (getCommand("perms") != null) {
             getCommand("perms").setExecutor(permsCommand);
         }
-        Bukkit.getPluginManager().registerEvents(new PermsGUIListener(this), this);
+        pm.registerEvents(new PermsGUIListener(this), this);
 
         if (getCommand("permcheck") != null) {
             getCommand("permcheck").setExecutor(new PermissionInspectorCommand());
@@ -237,12 +261,12 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         // ===============================
         SpawnEggRecipeManager spawnEggs = new SpawnEggRecipeManager(this);
         spawnEggs.registerAllSpawnEggs();
-        Bukkit.getPluginManager().registerEvents(new SpawnEggCraftListener(this), this);
+        pm.registerEvents(new SpawnEggCraftListener(this), this);
 
         // ===============================
         //  JOIN / LEAVE
         // ===============================
-        Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
+        pm.registerEvents(new JoinListener(), this);
 
         // ===============================
         //  STÜNDLICHER TIPP

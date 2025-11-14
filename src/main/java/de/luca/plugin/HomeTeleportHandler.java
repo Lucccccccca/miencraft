@@ -5,7 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class HomeTeleportHandler implements Listener {
 
@@ -27,11 +29,12 @@ public class HomeTeleportHandler implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        UUID uuid = p.getUniqueId();
 
-        if (!isMoveCancelled(p.getUniqueId())) return;
+        if (!isMoveCancelled(uuid)) return;
 
         if (e.getFrom().distanceSquared(e.getTo()) > 0.1) {
-            cancelMove.put(p.getUniqueId(), false);
+            cancelMove.put(uuid, false);
             p.sendMessage("§cTeleport abgebrochen! Du hast dich bewegt.");
         }
     }

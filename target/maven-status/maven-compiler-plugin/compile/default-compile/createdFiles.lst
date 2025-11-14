@@ -1,3 +1,4 @@
+de\luca\plugin\HomeHologramJoinListener.class
 de\luca\plugin\RecipeStorage$1.class
 de\luca\plugin\PermissionFinder.class
 de\luca\plugin\ServerSettingsCommand.class
@@ -23,10 +24,12 @@ de\luca\plugin\RecipeStorage.class
 de\luca\plugin\ConfigManager.class
 de\luca\plugin\HomeCommand.class
 de\luca\plugin\PlayerPrefixManager$CustomPrefixData.class
+de\luca\plugin\HomeAdminMainGUI.class
 de\luca\plugin\UnbreakableDropsListener.class
 de\luca\plugin\PermissionInspectorGUI.class
 de\luca\plugin\DeleteHomeCommand.class
 de\luca\plugin\SettingsCommand.class
+de\luca\plugin\HomePlayerSettingsGUI.class
 de\luca\plugin\JoinListener.class
 de\luca\plugin\PermissionInspectorCommand.class
 de\luca\plugin\DelHomeCommand.class
@@ -42,8 +45,10 @@ de\luca\plugin\MagnetListener.class
 de\luca\plugin\HomeGUIListener.class
 de\luca\plugin\PermissionUpdater.class
 de\luca\plugin\FastFurnaceListener$1.class
+de\luca\plugin\HomeHologramManager.class
 de\luca\plugin\AntiGriefCommand.class
 de\luca\plugin\SettingsMainGUI.class
+de\luca\plugin\HomePlayerSelectGUI.class
 de\luca\plugin\PermsRoleGUI.class
 de\luca\plugin\PermsMainGUI.class
 de\luca\plugin\AlwaysDropListener.class
@@ -73,6 +78,7 @@ de\luca\plugin\ServerSettingsListener.class
 de\luca\plugin\CustomSpawnEggRecipe.class
 de\luca\plugin\LucaCrafterPlugin.class
 de\luca\plugin\RoleManager.class
+de\luca\plugin\HomeAdminSettingsListener.class
 de\luca\plugin\ErzListener.class
 de\luca\plugin\RestartServerCommand.class
 de\luca\plugin\AntiCreeperListener.class

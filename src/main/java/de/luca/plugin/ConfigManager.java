@@ -28,6 +28,15 @@ public class ConfigManager {
         cfg.addDefault("server.tnt_block_damage", true);
         cfg.addDefault("server.pvp", true);
         cfg.addDefault("server.mob_griefing", true);
+
+        // Home-Defaults
+        cfg.addDefault("home.default.maxhomes", 10);
+        cfg.addDefault("home.default.delay", 3);
+        cfg.addDefault("home.default.cooldown", 0);
+        cfg.addDefault("home.default.instant", false);
+        cfg.addDefault("home.default.movecancel", true);
+        cfg.addDefault("home.default.particles", true);
+
         cfg.options().copyDefaults(true);
         plugin.saveConfig();
     }
@@ -63,7 +72,7 @@ public class ConfigManager {
     }
 
     // =============================
-    // 🌲 Baum-System
+    //  Baum-System
     // =============================
 
     public boolean getBaumEnabled(UUID uuid) {
@@ -151,7 +160,7 @@ public class ConfigManager {
     }
 
     // =============================
-    // 📊 Stats-System
+    //  Stats-System
     // =============================
 
     public void addOreType(UUID uuid, Material mat, int amount) {
@@ -226,7 +235,7 @@ public class ConfigManager {
     }
 
     // =============================
-    // 💤 AFK-System
+    // 💤 AFK-SYSTEM
     // =============================
 
     public boolean toggleAfk(UUID uuid) {
@@ -258,7 +267,7 @@ public class ConfigManager {
     }
 
     public boolean isMagnetEnabled(UUID uuid) {
-        return getPlayerConfig(uuid).getBoolean("player.magnet", true); // true als Default
+        return getPlayerConfig(uuid).getBoolean("player.magnet", true);
     }
 
     // =============================
@@ -337,9 +346,11 @@ public class ConfigManager {
 
     // ==================== HOME SYSTEM CONFIG ==================== //
 
+    // Partikel an/aus pro Spieler
     public boolean isHomeParticlesEnabled(UUID uuid) {
         FileConfiguration cfg = plugin.getConfig();
-        return cfg.getBoolean("players." + uuid + ".home.particles", true);
+        boolean def = cfg.getBoolean("home.default.particles", true);
+        return cfg.getBoolean("players." + uuid + ".home.particles", def);
     }
 
     public void setHomeParticlesEnabled(UUID uuid, boolean enabled) {
@@ -348,9 +359,11 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
+    // Delay bis zum Teleport
     public int getHomeTeleportDelay(UUID uuid) {
         FileConfiguration cfg = plugin.getConfig();
-        return cfg.getInt("players." + uuid + ".home.delay", 3);
+        int def = cfg.getInt("home.default.delay", 3);
+        return cfg.getInt("players." + uuid + ".home.delay", def);
     }
 
     public void setHomeTeleportDelay(UUID uuid, int delay) {
@@ -359,9 +372,11 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
+    // Max. Homes pro Spieler (Default 10)
     public int getMaxHomes(UUID uuid) {
         FileConfiguration cfg = plugin.getConfig();
-        return cfg.getInt("players." + uuid + ".home.maxhomes", 10);
+        int def = cfg.getInt("home.default.maxhomes", 10);
+        return cfg.getInt("players." + uuid + ".home.maxhomes", def);
     }
 
     public void setMaxHomes(UUID uuid, int amount) {
@@ -369,6 +384,62 @@ public class ConfigManager {
         cfg.set("players." + uuid + ".home.maxhomes", amount);
         plugin.saveConfig();
     }
+
+    // Cooldown pro Spieler
+    public int getHomeCooldown(UUID uuid) {
+        FileConfiguration cfg = plugin.getConfig();
+        int def = cfg.getInt("home.default.cooldown", 0);
+        return cfg.getInt("players." + uuid + ".home.cooldown", def);
+    }
+
+    public void setHomeCooldown(UUID uuid, int seconds) {
+        FileConfiguration cfg = plugin.getConfig();
+        cfg.set("players." + uuid + ".home.cooldown", seconds);
+        plugin.saveConfig();
+    }
+
+    // Instant-TP pro Spieler
+    public boolean isHomeInstantTeleport(UUID uuid) {
+        FileConfiguration cfg = plugin.getConfig();
+        boolean def = cfg.getBoolean("home.default.instant", false);
+        return cfg.getBoolean("players." + uuid + ".home.instant", def);
+    }
+
+    public void setHomeInstantTeleport(UUID uuid, boolean instant) {
+        FileConfiguration cfg = plugin.getConfig();
+        cfg.set("players." + uuid + ".home.instant", instant);
+        plugin.saveConfig();
+    }
+
+    // Move-Cancel pro Spieler
+    public boolean isHomeMoveCancelEnabled(UUID uuid) {
+        FileConfiguration cfg = plugin.getConfig();
+        boolean def = cfg.getBoolean("home.default.movecancel", true);
+        return cfg.getBoolean("players." + uuid + ".home.movecancel", def);
+    }
+
+    public void setHomeMoveCancelEnabled(UUID uuid, boolean enabled) {
+        FileConfiguration cfg = plugin.getConfig();
+        cfg.set("players." + uuid + ".home.movecancel", enabled);
+        plugin.saveConfig();
+    }
+
+
+
+        // Hologramme pro Spieler gespeichert
+public boolean isHomeHologramEnabled(UUID uuid) {
+    FileConfiguration cfg = plugin.getConfig();
+    boolean def = true;
+    return cfg.getBoolean("players." + uuid + ".home.holograms", def);
+}
+
+public void setHomeHologramEnabled(UUID uuid, boolean enabled) {
+    FileConfiguration cfg = plugin.getConfig();
+    cfg.set("players." + uuid + ".home.holograms", enabled);
+    plugin.saveConfig();
+}
+
+
 
     // =============================
     // Util
