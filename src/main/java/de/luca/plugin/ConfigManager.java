@@ -66,33 +66,89 @@ public class ConfigManager {
     // 🌲 Baum-System
     // =============================
 
-    public boolean getBaumEnabled(UUID uuid) { return getPlayerConfig(uuid).getBoolean("baum.enabled", false); }
-    public void setBaumEnabled(UUID uuid, boolean v) { var c=getPlayerConfig(uuid); c.set("baum.enabled", v); savePlayerConfig(uuid,c); }
+    public boolean getBaumEnabled(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("baum.enabled", false);
+    }
 
-    public double getBaumDurabilityFactor(UUID uuid) { return getPlayerConfig(uuid).getDouble("baum.durability-factor", 1.0D); }
-    public void setBaumDurabilityFactor(UUID uuid, double f) { var c=getPlayerConfig(uuid); c.set("baum.durability-factor", f); savePlayerConfig(uuid,c); }
+    public void setBaumEnabled(UUID uuid, boolean v) {
+        var c = getPlayerConfig(uuid);
+        c.set("baum.enabled", v);
+        savePlayerConfig(uuid, c);
+    }
 
-    public boolean getBaumRequireSneak(UUID uuid) { return getPlayerConfig(uuid).getBoolean("baum.require-sneak", true); }
-    public void setBaumRequireSneak(UUID uuid, boolean v) { var c=getPlayerConfig(uuid); c.set("baum.require-sneak", v); savePlayerConfig(uuid,c); }
+    public double getBaumDurabilityFactor(UUID uuid) {
+        return getPlayerConfig(uuid).getDouble("baum.durability-factor", 1.0D);
+    }
 
-    public boolean getBaumAutoReplant(UUID uuid) { return getPlayerConfig(uuid).getBoolean("baum.auto-replant", false); }
-    public void setBaumAutoReplant(UUID uuid, boolean v) { var c=getPlayerConfig(uuid); c.set("baum.auto-replant", v); savePlayerConfig(uuid,c); }
+    public void setBaumDurabilityFactor(UUID uuid, double f) {
+        var c = getPlayerConfig(uuid);
+        c.set("baum.durability-factor", f);
+        savePlayerConfig(uuid, c);
+    }
+
+    public boolean getBaumRequireSneak(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("baum.require-sneak", true);
+    }
+
+    public void setBaumRequireSneak(UUID uuid, boolean v) {
+        var c = getPlayerConfig(uuid);
+        c.set("baum.require-sneak", v);
+        savePlayerConfig(uuid, c);
+    }
+
+    public boolean getBaumAutoReplant(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("baum.auto-replant", false);
+    }
+
+    public void setBaumAutoReplant(UUID uuid, boolean v) {
+        var c = getPlayerConfig(uuid);
+        c.set("baum.auto-replant", v);
+        savePlayerConfig(uuid, c);
+    }
 
     // =============================
     // ⛏ Erz-System
     // =============================
 
-    public boolean getErzEnabled(UUID uuid) { return getPlayerConfig(uuid).getBoolean("erz.enabled", false); }
-    public void setErzEnabled(UUID uuid, boolean v) { var c=getPlayerConfig(uuid); c.set("erz.enabled", v); savePlayerConfig(uuid,c); }
+    public boolean getErzEnabled(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("erz.enabled", false);
+    }
 
-    public double getErzDurabilityFactor(UUID uuid) { return getPlayerConfig(uuid).getDouble("erz.durability-factor", 1.0D); }
-    public void setErzDurabilityFactor(UUID uuid, double f) { var c=getPlayerConfig(uuid); c.set("erz.durability-factor", f); savePlayerConfig(uuid,c); }
+    public void setErzEnabled(UUID uuid, boolean v) {
+        var c = getPlayerConfig(uuid);
+        c.set("erz.enabled", v);
+        savePlayerConfig(uuid, c);
+    }
 
-    public boolean getErzRequireSneak(UUID uuid) { return getPlayerConfig(uuid).getBoolean("erz.require-sneak", true); }
-    public void setErzRequireSneak(UUID uuid, boolean v) { var c=getPlayerConfig(uuid); c.set("erz.require-sneak", v); savePlayerConfig(uuid,c); }
+    public double getErzDurabilityFactor(UUID uuid) {
+        return getPlayerConfig(uuid).getDouble("erz.durability-factor", 1.0D);
+    }
 
-    public boolean getErzOnlyStandard(UUID uuid) { return getPlayerConfig(uuid).getBoolean("erz.only-standard", true); }
-    public void setErzOnlyStandard(UUID uuid, boolean v) { var c=getPlayerConfig(uuid); c.set("erz.only-standard", v); savePlayerConfig(uuid,c); }
+    public void setErzDurabilityFactor(UUID uuid, double f) {
+        var c = getPlayerConfig(uuid);
+        c.set("erz.durability-factor", f);
+        savePlayerConfig(uuid, c);
+    }
+
+    public boolean getErzRequireSneak(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("erz.require-sneak", true);
+    }
+
+    public void setErzRequireSneak(UUID uuid, boolean v) {
+        var c = getPlayerConfig(uuid);
+        c.set("erz.require-sneak", v);
+        savePlayerConfig(uuid, c);
+    }
+
+    public boolean getErzOnlyStandard(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("erz.only-standard", true);
+    }
+
+    public void setErzOnlyStandard(UUID uuid, boolean v) {
+        var c = getPlayerConfig(uuid);
+        c.set("erz.only-standard", v);
+        savePlayerConfig(uuid, c);
+    }
 
     // =============================
     // 📊 Stats-System
@@ -146,13 +202,13 @@ public class ConfigManager {
     public boolean isFlyEnabled(UUID uuid) {
         return getPlayerConfig(uuid).getBoolean("player.fly", false);
     }
+
     public void setFlyEnabled(UUID uuid, boolean v) {
         var c = getPlayerConfig(uuid);
         c.set("player.fly", v);
         savePlayerConfig(uuid, c);
     }
 
-    
     public void setMagnetEnabled(UUID uuid, boolean v) {
         var c = getPlayerConfig(uuid);
         c.set("player.magnet", v);
@@ -162,6 +218,7 @@ public class ConfigManager {
     public boolean isFastFurnaceEnabled(UUID uuid) {
         return getPlayerConfig(uuid).getBoolean("player.fast_furnace", false);
     }
+
     public void setFastFurnaceEnabled(UUID uuid, boolean v) {
         var c = getPlayerConfig(uuid);
         c.set("player.fast_furnace", v);
@@ -186,23 +243,24 @@ public class ConfigManager {
         afkStatus.put(uuid, value);
     }
 
-
-
-    
-
+    // =============================
+    // 🎁 Auto-Pickup / Magnet
+    // =============================
 
     public boolean isAutoPickupEnabled(UUID uuid) {
-    return getPlayerConfig(uuid).getBoolean("player.auto_pickup", true);
-        }
+        return getPlayerConfig(uuid).getBoolean("player.auto_pickup", true);
+    }
 
     public void setAutoPickupEnabled(UUID uuid, boolean value) {
-    var cfg = getPlayerConfig(uuid);
-    cfg.set("player.auto_pickup", value);
-    savePlayerConfig(uuid, cfg);
-        }
+        var cfg = getPlayerConfig(uuid);
+        cfg.set("player.auto_pickup", value);
+        savePlayerConfig(uuid, cfg);
+    }
 
+    public boolean isMagnetEnabled(UUID uuid) {
+        return getPlayerConfig(uuid).getBoolean("player.magnet", true); // true als Default
+    }
 
-        
     // =============================
     // ⚙️ Server Settings (global)
     // =============================
@@ -210,6 +268,7 @@ public class ConfigManager {
     public boolean isFarmProtectEnabled() {
         return plugin.getConfig().getBoolean("server.farm_protect", true);
     }
+
     public void setFarmProtectEnabled(boolean v) {
         plugin.getConfig().set("server.farm_protect", v);
         plugin.saveConfig();
@@ -218,6 +277,7 @@ public class ConfigManager {
     public boolean isAntiCreeperEnabled() {
         return plugin.getConfig().getBoolean("server.anti_creeper", true);
     }
+
     public void setAntiCreeperEnabled(boolean v) {
         plugin.getConfig().set("server.anti_creeper", v);
         plugin.saveConfig();
@@ -226,6 +286,7 @@ public class ConfigManager {
     public boolean isTntBlockDamageEnabled() {
         return plugin.getConfig().getBoolean("server.tnt_block_damage", true);
     }
+
     public void setTntBlockDamageEnabled(boolean v) {
         plugin.getConfig().set("server.tnt_block_damage", v);
         plugin.saveConfig();
@@ -234,6 +295,7 @@ public class ConfigManager {
     public boolean isPvpEnabled() {
         return plugin.getConfig().getBoolean("server.pvp", true);
     }
+
     public void setPvpEnabled(boolean v) {
         plugin.getConfig().set("server.pvp", v);
         plugin.saveConfig();
@@ -242,12 +304,13 @@ public class ConfigManager {
     public boolean isMobGriefingEnabled() {
         return plugin.getConfig().getBoolean("server.mob_griefing", true);
     }
+
     public void setMobGriefingEnabled(boolean v) {
         plugin.getConfig().set("server.mob_griefing", v);
         plugin.saveConfig();
-    }       
+    }
 
-        // =============================
+    // =============================
     // 🔐 Rollen & Berechtigungen
     // =============================
 
@@ -263,8 +326,6 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
-    
-
     public String getRole(UUID uuid) {
         return plugin.getConfig().getString("roles." + uuid, "spieler");
     }
@@ -274,41 +335,40 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
-    public boolean isMagnetEnabled(UUID uuid) {
-    return getPlayerConfig(uuid).getBoolean("player.magnet", true); // <-- true als Default
-    }
-    
-
     // ==================== HOME SYSTEM CONFIG ==================== //
 
-public boolean isHomeParticlesEnabled(UUID uuid) {
-    return config.getBoolean("players." + uuid + ".home.particles", true);
-}
+    public boolean isHomeParticlesEnabled(UUID uuid) {
+        FileConfiguration cfg = plugin.getConfig();
+        return cfg.getBoolean("players." + uuid + ".home.particles", true);
+    }
 
-public void setHomeParticlesEnabled(UUID uuid, boolean enabled) {
-    config.set("players." + uuid + ".home.particles", enabled);
-    save();
-}
+    public void setHomeParticlesEnabled(UUID uuid, boolean enabled) {
+        FileConfiguration cfg = plugin.getConfig();
+        cfg.set("players." + uuid + ".home.particles", enabled);
+        plugin.saveConfig();
+    }
 
-public int getHomeTeleportDelay(UUID uuid) {
-    return config.getInt("players." + uuid + ".home.delay", 3);
-}
+    public int getHomeTeleportDelay(UUID uuid) {
+        FileConfiguration cfg = plugin.getConfig();
+        return cfg.getInt("players." + uuid + ".home.delay", 3);
+    }
 
-public void setHomeTeleportDelay(UUID uuid, int delay) {
-    config.set("players." + uuid + ".home.delay", delay);
-    save();
-}
+    public void setHomeTeleportDelay(UUID uuid, int delay) {
+        FileConfiguration cfg = plugin.getConfig();
+        cfg.set("players." + uuid + ".home.delay", delay);
+        plugin.saveConfig();
+    }
 
-public int getMaxHomes(UUID uuid) {
-    return config.getInt("players." + uuid + ".home.maxhomes", 10);
-}
+    public int getMaxHomes(UUID uuid) {
+        FileConfiguration cfg = plugin.getConfig();
+        return cfg.getInt("players." + uuid + ".home.maxhomes", 10);
+    }
 
-public void setMaxHomes(UUID uuid, int amount) {
-    config.set("players." + uuid + ".home.maxhomes", amount);
-    save();
-}
-
-
+    public void setMaxHomes(UUID uuid, int amount) {
+        FileConfiguration cfg = plugin.getConfig();
+        cfg.set("players." + uuid + ".home.maxhomes", amount);
+        plugin.saveConfig();
+    }
 
     // =============================
     // Util

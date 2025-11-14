@@ -30,7 +30,7 @@ public class HomeMarkerTask extends BukkitRunnable {
                     double z = Math.sin(t) * 0.8;
 
                     p.spawnParticle(
-                            new Particle.DustOptions(Color.RED, 1.0F)
+                            Particle.DUST,
                             l.getX() + x,
                             l.getY(),
                             l.getZ() + z,

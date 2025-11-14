@@ -8,9 +8,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class HomeGUIListener implements Listener {
 
     private final LucaCrafterPlugin plugin;
+    private final HomeTeleportHandler teleportHandler;
 
     public HomeGUIListener(LucaCrafterPlugin plugin) {
         this.plugin = plugin;
+
+        // TeleportHandler direkt erstellen (einziger Listener)
+        this.teleportHandler = new HomeTeleportHandler(plugin);
+        plugin.getServer().getPluginManager().registerEvents(teleportHandler, plugin);
     }
 
     @EventHandler
@@ -26,17 +31,15 @@ public class HomeGUIListener implements Listener {
             String name = e.getCurrentItem().getItemMeta().getDisplayName()
                     .replace("§b", "");
 
-            Home h = plugin.getHomeManager().getHomes(p.getUniqueId()).get(name.toLowerCase());
+            Home h = plugin.getHomeManager()
+                    .getHomes(p.getUniqueId())
+                    .get(name.toLowerCase());
 
             if (h != null) {
                 p.closeInventory();
 
-                HomeTeleportHandler tp = (HomeTeleportHandler)
-                        plugin.getServer().getPluginManager().getRegisteredListeners(plugin)
-                        .stream().filter(l -> l.getListener() instanceof HomeTeleportHandler)
-                        .findFirst().get().getListener();
-
-                HomeTeleportLogic.teleportPlayer(plugin, tp, p, h);
+                // teleportHandler ist jetzt sicher
+                HomeTeleportLogic.teleportPlayer(plugin, teleportHandler, p, h);
             }
         }
     }
