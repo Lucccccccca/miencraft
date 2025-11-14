@@ -10,92 +10,166 @@ commands:
     description: Baum-System
     usage: /baum
     permission: lucacrafter.baum.use
+
   erz:
     description: Erz-System
     usage: /erz
     permission: lucacrafter.erz.use
+
   stats:
     description: Zeigt Statistiken an
     usage: /stats
     permission: lucacrafter.stats.use
+
   afk:
     description: Schaltet AFK-Modus ein/aus
     usage: /afk
     permission: lucacrafter.afk.use
+
   antigrief:
     description: Aktiviert das Anti-Grief- bzw. Anti-Creeper-System
+    usage: /antigrief
+    permission: lucacrafter.antigrief.toggle
+
   perms:
     description: Öffnet die Rollen- & Rechteverwaltung (GUI)
     usage: /perms
     permission: lucacrafter.perms.manage
+
   craftgui:
-    description: Öffnet das Custom Crafting Menü
+    description: Öffnet das Custom-Crafting-Menü
     usage: /craftgui
     permission: lucacrafter.craftgui.use
+
   settings:
-    description: Öffnet das Einstellungsmenü (Server & Spieler)
+    description: Öffnet das Spieler-Einstellungsmenü
     usage: /settings
     permission: lucacrafter.settings.open
+
   server:
     description: Öffnet das Server-Einstellungsmenü
     usage: /server
     permission: lucacrafter.server.open
+
   restartserver:
     description: Startet den Server mit Countdown neu
     usage: /restartserver [Sekunden]
     permission: lucacrafter.server.restart
-    permsreload:
-    description: Rollen & Rechte neu laden
+
+  permcheck:
+    description: Zeigt die Rechte eines Spielers an
+    usage: /permcheck <Spieler>
+    permission: lucacrafter.permcheck.use
+
+  permsreload:
+    description: Lädt Rollen & Rechte neu
     usage: /permsreload
     permission: lucacrafter.perms.manage
-  permcheck:
-    description: Zeigt Rechte eines Spielers
-    usage: /permcheck <Spieler>
-    permission: lu
+
+  prefix:
+    description: Öffnet dein Prefix-Menü
+    usage: /prefix [Spieler]
+    permission: lucacrafter.prefix.gui
+
+  home:
+    description: Öffnet dein Home-GUI
+    usage: /home
+    permission: lucacrafter.home.use
+
+  sethome:
+    description: Erstellt oder überschreibt ein Home
+    usage: /sethome <Name>
+    permission: lucacrafter.home.set
+
+  delhome:
+    description: Löscht ein Home
+    usage: /delhome <Name>
+    permission: lucacrafter.home.delete
+
+  homesadmin:
+    description: Admin-GUI für Homes
+    usage: /homesadmin [Spieler]
+    permission: lucacrafter.home.admin
 
 permissions:
   lucacrafter.baum.use:
     description: Erlaubt das Öffnen des Baum-Systems
     default: true
+
   lucacrafter.erz.use:
     description: Erlaubt das Öffnen des Erz-Systems
     default: true
+
   lucacrafter.stats.use:
     description: Erlaubt das Öffnen der Statistik-GUI
     default: true
+
   lucacrafter.afk.use:
     description: Erlaubt die Nutzung des AFK-Kommandos
     default: true
+
   lucacrafter.craftgui.use:
     description: Erlaubt das Öffnen des Custom-Crafting-Menüs
     default: op
+
   lucacrafter.settings.open:
     description: Erlaubt das Öffnen des Spieler-Einstellungsmenüs
     default: true
+
   lucacrafter.server.open:
     description: Erlaubt das Öffnen des Server-Einstellungsmenüs
     default: op
+
   lucacrafter.autopickup:
     description: Erlaubt die Nutzung von Auto-Pickup
     default: false
+
   lucacrafter.magnet:
     description: Erlaubt die Nutzung des Magnet-Systems
     default: false
+
   lucacrafter.fastfurnace:
     description: Erlaubt die Nutzung des Schnellofen-Systems
     default: false
+
   lucacrafter.antigrief.toggle:
     description: Darf Anti-Grief-Einstellungen umschalten
     default: op
+
   lucacrafter.perms.manage:
     description: Darf das Rollen-/Rechte-GUI verwalten
     default: op
+
   lucacrafter.server.restart:
     description: Darf den Server mit /restartserver neu starten
     default: op
+
   lucacrafter.tab.prefix:
-    description: Erlaubt das Prefix-System
+    description: Aktiviert das Prefix-System im TAB
     default: true
+
   lucacrafter.permcheck.use:
     description: Erlaubt Permission-Inspector
+    default: op
+
+  # Prefix-GUI / Custom Prefix
+  lucacrafter.prefix.gui:
+    description: Darf sein Prefix im GUI bearbeiten
+    default: true
+
+  # Home-System
+  lucacrafter.home.use:
+    description: Darf /home verwenden und das GUI öffnen
+    default: true
+
+  lucacrafter.home.set:
+    description: Darf Homes setzen
+    default: true
+
+  lucacrafter.home.delete:
+    description: Darf Homes löschen
+    default: true
+
+  lucacrafter.home.admin:
+    description: Darf das Homes-Admin-GUI benutzen
     default: op

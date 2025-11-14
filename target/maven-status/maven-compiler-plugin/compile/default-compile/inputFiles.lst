@@ -1,6 +1,8 @@
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\AfkListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\AutoPickupListener.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PlayerPrefixManager.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\MagnetListener.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PrefixCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\AntiCreeperListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\FastFurnaceListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\BaumListener.java
@@ -18,6 +20,7 @@ C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CraftGUIListen
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\FarmProtectListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsRoleListGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\UnbreakableDropsListener.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PrefixColorGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PrefixUpdater.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\JoinListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsGUIListener.java
@@ -26,10 +29,12 @@ C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsMainGUI.j
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermsPlayerGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermissionInspectorCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\ErzListener.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PrefixGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CraftListGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SettingsMainGUI.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\AntiGriefCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SettingsGUIListener.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PrefixGUIListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\LucaCrafterPlugin.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\RoleManager.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SettingsCommand.java
@@ -42,6 +47,7 @@ C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SpawnEggCraftL
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SpawnEggRecipeManager.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\BaumCommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PermissionInspectorGUI.java
+C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\PrefixChatListener.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CraftGUICommand.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\CustomSpawnEggRecipe.java
 C:\MeinErstesPlugin\MeinErstesPlugin\src\main\java\de\luca\plugin\SettingsPlayerGUI.java

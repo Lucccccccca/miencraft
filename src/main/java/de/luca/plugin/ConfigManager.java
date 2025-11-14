@@ -277,6 +277,36 @@ public class ConfigManager {
     public boolean isMagnetEnabled(UUID uuid) {
     return getPlayerConfig(uuid).getBoolean("player.magnet", true); // <-- true als Default
     }
+    
+
+    // ==================== HOME SYSTEM CONFIG ==================== //
+
+public boolean isHomeParticlesEnabled(UUID uuid) {
+    return config.getBoolean("players." + uuid + ".home.particles", true);
+}
+
+public void setHomeParticlesEnabled(UUID uuid, boolean enabled) {
+    config.set("players." + uuid + ".home.particles", enabled);
+    save();
+}
+
+public int getHomeTeleportDelay(UUID uuid) {
+    return config.getInt("players." + uuid + ".home.delay", 3);
+}
+
+public void setHomeTeleportDelay(UUID uuid, int delay) {
+    config.set("players." + uuid + ".home.delay", delay);
+    save();
+}
+
+public int getMaxHomes(UUID uuid) {
+    return config.getInt("players." + uuid + ".home.maxhomes", 10);
+}
+
+public void setMaxHomes(UUID uuid, int amount) {
+    config.set("players." + uuid + ".home.maxhomes", amount);
+    save();
+}
 
 
 

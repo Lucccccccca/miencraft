@@ -4,20 +4,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * Hauptklasse des Plugins. Registriert alle Systeme, inkl. PermissionUpdater und stündlicher Tipp-Nachricht.
- */
 public final class LucaCrafterPlugin extends JavaPlugin {
 
     private static LucaCrafterPlugin instance;
+
+    // ======= Managers ========
     private ConfigManager configManager;
     private RoleManager roleManager;
     private RecipeStorage recipeStorage;
     private PermissionUpdater permissionUpdater;
+
+    // PREFIX-SYSTEM
+    private PlayerPrefixManager playerPrefixManager;
     private PrefixUpdater prefixUpdater;
-    public PrefixUpdater getPrefixUpdater() { return prefixUpdater; }
 
+    // HOME-SYSTEM
+    private HomeManager homeManager;
+    private HomeMarkerTask homeMarkerTask;
 
+    // ======= GETTERS ========
     public static LucaCrafterPlugin getInstance() {
         return instance;
     }
@@ -38,114 +43,217 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         return permissionUpdater;
     }
 
+    public PlayerPrefixManager getPlayerPrefixManager() {
+        return playerPrefixManager;
+    }
+
+    public PrefixUpdater getPrefixUpdater() {
+        return prefixUpdater;
+    }
+
+    public HomeManager getHomeManager() {
+        return homeManager;
+    }
+
     @Override
     public void onEnable() {
+
         instance = this;
 
-        // 📁 Ordner erstellen
-        if (!getDataFolder().exists()) getDataFolder().mkdirs();
+        // Datenordner
+        if (!getDataFolder().exists()) {
+            getDataFolder().mkdirs();
+        }
 
-        // 🧩 Manager
+        // ===============================
+        //  MANAGER LADEN
+        // ===============================
         configManager = new ConfigManager(this);
         roleManager = new RoleManager(this);
 
-        // 🆕 PermissionUpdater registrieren
+        // PREFIX-MANAGER (muss vor PrefixUpdater kommen!)
+        playerPrefixManager = new PlayerPrefixManager(this);
+        prefixUpdater = new PrefixUpdater(this, roleManager, playerPrefixManager);
+
+        // PERMISSION-UPDATER
         permissionUpdater = new PermissionUpdater(this);
         Bukkit.getPluginManager().registerEvents(permissionUpdater, this);
 
-        // 🌲 Baum-System
+        // ===============================
+        //  HOME-MANAGER + PARTIKEL-TASK
+        // ===============================
+        homeManager = new HomeManager(this);
+
+        // Zeichnet ggf. Partikelringe um Homes
+        homeMarkerTask = new HomeMarkerTask(this, homeManager);
+        // alle 2 Sekunden
+        homeMarkerTask.runTaskTimer(this, 40L, 40L);
+
+        // ===============================
+        //  PREFIX-SYSTEM COMMANDS & LISTENER
+        // ===============================
+        if (getCommand("prefix") != null) {
+            getCommand("prefix").setExecutor(new PrefixCommand(this));
+        }
+
+        PrefixChatListener prefixChatListener = new PrefixChatListener(this);
+        Bukkit.getPluginManager().registerEvents(
+                new PrefixGUIListener(this, prefixChatListener), this);
+        Bukkit.getPluginManager().registerEvents(prefixChatListener, this);
+
+        // ===============================
+        //  HOME-COMMANDS & LISTENER
+        // ===============================
+        if (getCommand("home") != null) {
+            getCommand("home").setExecutor(new HomeCommand(this));
+        }
+        if (getCommand("sethome") != null) {
+            getCommand("sethome").setExecutor(new SetHomeCommand(this));
+        }
+        if (getCommand("delhome") != null) {
+            getCommand("delhome").setExecutor(new DelHomeCommand(this));
+        }
+        if (getCommand("homesadmin") != null) {
+            getCommand("homesadmin").setExecutor(new HomesAdminCommand(this));
+        }
+
+        // GUI + Teleport-Handling für Homes
+        Bukkit.getPluginManager().registerEvents(new HomeGUIListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new HomeTeleportHandler(this), this);
+
+        // ===============================
+        //  BAUM-SYSTEM
+        // ===============================
         BaumCommand baumCommand = new BaumCommand(this);
-        getCommand("baum").setExecutor(baumCommand);
+        if (getCommand("baum") != null) {
+            getCommand("baum").setExecutor(baumCommand);
+        }
         Bukkit.getPluginManager().registerEvents(baumCommand, this);
         Bukkit.getPluginManager().registerEvents(new BaumListener(this, baumCommand), this);
 
-
-            // Prefix-System
-        PrefixUpdater prefix = new PrefixUpdater(this);
-        this.prefixUpdater = prefix;
-        Bukkit.getPluginManager().registerEvents(prefix, this);
-
-        // Permission-Inspector
-        getCommand("permcheck").setExecutor(new PermissionInspectorCommand());
-
-        // Rollen-Reload
-        getCommand("permsreload").setExecutor(new PermsReloadCommand(this));
-
-        // Automatische Permission-Erkennung
-        PermissionFinder.scanAndFill(this);
-
-
-        // ⛏ Erz-System
+        // ===============================
+        //  ERZ-SYSTEM
+        // ===============================
         ErzCommand erzCommand = new ErzCommand(this);
-        getCommand("erz").setExecutor(erzCommand);
+        if (getCommand("erz") != null) {
+            getCommand("erz").setExecutor(erzCommand);
+        }
         Bukkit.getPluginManager().registerEvents(erzCommand, this);
         Bukkit.getPluginManager().registerEvents(new ErzListener(this, erzCommand), this);
 
-        // 📊 Stats
+        // ===============================
+        //  STATS-SYSTEM
+        // ===============================
         StatsCommand statsCommand = new StatsCommand(this);
-        getCommand("stats").setExecutor(statsCommand);
+        if (getCommand("stats") != null) {
+            getCommand("stats").setExecutor(statsCommand);
+        }
         Bukkit.getPluginManager().registerEvents(statsCommand, this);
 
-        // 🧱 Farm & Anti-Creeper
+        // ===============================
+        //  FARM / ANTI-CREEPER
+        // ===============================
         Bukkit.getPluginManager().registerEvents(new FarmProtectListener(this), this);
         Bukkit.getPluginManager().registerEvents(new AntiCreeperListener(this), this);
 
-        // ⚙ Settings
-        getCommand("settings").setExecutor(new SettingsCommand(this));
+        // ===============================
+        //  SETTINGS
+        // ===============================
+        if (getCommand("settings") != null) {
+            getCommand("settings").setExecutor(new SettingsCommand(this));
+        }
         Bukkit.getPluginManager().registerEvents(new SettingsGUIListener(this), this);
 
-        // 🧑‍💼 Server-Einstellungen
-        getCommand("server").setExecutor(new ServerSettingsCommand(this));
+        // ===============================
+        //  SERVER-SETTINGS
+        // ===============================
+        if (getCommand("server") != null) {
+            getCommand("server").setExecutor(new ServerSettingsCommand(this));
+        }
         Bukkit.getPluginManager().registerEvents(new ServerSettingsListener(this), this);
 
-        // ⚡ Fast Furnace
+        // ===============================
+        //  CUSTOM CRAFTING
+        // ===============================
+        recipeStorage = new RecipeStorage(this);
+        if (getCommand("craftgui") != null) {
+            getCommand("craftgui").setExecutor(new CraftGUICommand(this));
+        }
+        Bukkit.getPluginManager().registerEvents(new CraftGUIListener(this), this);
+
+        // ===============================
+        //  FAST FURNACE
+        // ===============================
         Bukkit.getPluginManager().registerEvents(new FastFurnaceListener(this), this);
 
-        // 🧲 Magnet & AutoPickup
+        // ===============================
+        //  MAGNET / AUTOPICKUP
+        // ===============================
         Bukkit.getPluginManager().registerEvents(new MagnetListener(this), this);
         Bukkit.getPluginManager().registerEvents(new AutoPickupListener(this), this);
 
-        // 🧱 AlwaysDrop
+        // ===============================
+        //  ALWAYS DROP
+        // ===============================
         Bukkit.getPluginManager().registerEvents(new AlwaysDropListener(this), this);
 
-        // 🧩 Custom Crafting
-        recipeStorage = new RecipeStorage(this);
-        getCommand("craftgui").setExecutor(new CraftGUICommand(this));
-        Bukkit.getPluginManager().registerEvents(new CraftGUIListener(this), this);
-
-        // 💤 AFK
+        // ===============================
+        //  AFK-SYSTEM
+        // ===============================
         AfkCommand afkCommand = new AfkCommand(this);
-        getCommand("afk").setExecutor(afkCommand);
+        if (getCommand("afk") != null) {
+            getCommand("afk").setExecutor(afkCommand);
+        }
         Bukkit.getPluginManager().registerEvents(afkCommand, this);
 
+        // ===============================
+        //  RESTART-SYSTEM
+        // ===============================
+        if (getCommand("restartserver") != null) {
+            getCommand("restartserver").setExecutor(new RestartServerCommand(this));
+        }
 
-        getCommand("restartserver").setExecutor(new RestartServerCommand(this));
-
-
-
-
-        // 🧑‍💼 Perms
+        // ===============================
+        //  PERMS-GUI / INSPECTOR
+        // ===============================
         PermsCommand permsCommand = new PermsCommand(this);
-        getCommand("perms").setExecutor(permsCommand);
+        if (getCommand("perms") != null) {
+            getCommand("perms").setExecutor(permsCommand);
+        }
         Bukkit.getPluginManager().registerEvents(new PermsGUIListener(this), this);
 
-        // 🥚 Spawn-Eggs
-        SpawnEggRecipeManager recipeManager = new SpawnEggRecipeManager(this);
-        recipeManager.registerAllSpawnEggs();
+        if (getCommand("permcheck") != null) {
+            getCommand("permcheck").setExecutor(new PermissionInspectorCommand());
+        }
+        if (getCommand("permsreload") != null) {
+            getCommand("permsreload").setExecutor(new PermsReloadCommand(this));
+        }
+
+        // scannt alle Permission-Nodes
+        PermissionFinder.scanAndFill(this);
+
+        // ===============================
+        //  SPAWN-EGG-RECIPES
+        // ===============================
+        SpawnEggRecipeManager spawnEggs = new SpawnEggRecipeManager(this);
+        spawnEggs.registerAllSpawnEggs();
         Bukkit.getPluginManager().registerEvents(new SpawnEggCraftListener(this), this);
 
-        // 👋 Join/Leave
+        // ===============================
+        //  JOIN / LEAVE
+        // ===============================
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
 
-        // 🕒 Tipp-Nachricht alle Stunde
-        long stunde = 20L * 60 * 60;
+        // ===============================
+        //  STÜNDLICHER TIPP
+        // ===============================
+        long hour = 20L * 60L * 60L;
         Bukkit.getScheduler().runTaskTimer(this, () -> {
-            String msg = ChatColor.YELLOW + "💡 Tipp: Nutze "
-                    + ChatColor.GREEN + "/baum" + ChatColor.YELLOW + " für den Baumfäller, "
-                    + ChatColor.AQUA + "/erz" + ChatColor.YELLOW + " für das Erz-System "
-                    + "und " + ChatColor.GOLD + "/settings" + ChatColor.YELLOW + " für deine Einstellungen!";
-            Bukkit.broadcastMessage(msg);
-        }, stunde, stunde);
+            Bukkit.broadcastMessage(ChatColor.YELLOW + "💡 Tipp: Nutze "
+                    + ChatColor.GREEN + "/baum" + ChatColor.YELLOW + ", "
+                    + ChatColor.AQUA + "/erz" + ChatColor.YELLOW + ", "
+                    + ChatColor.GOLD + "/settings" + ChatColor.YELLOW + "!");
+        }, hour, hour);
 
         getLogger().info("✅ LucaCrafterPlugin erfolgreich aktiviert!");
     }
