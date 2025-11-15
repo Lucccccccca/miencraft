@@ -1,5 +1,7 @@
 package de.luca.plugin;
 
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,14 +24,14 @@ public class HomeTeleportLogic {
 
         UUID uuid = player.getUniqueId();
 
-        int cooldown = config.getHomeCooldown(uuid);      // pro Spieler
-        int delay = config.getHomeTeleportDelay(uuid);    // pro Spieler
+        int cooldown = config.getHomeCooldown(uuid);
+        int delay = config.getHomeTeleportDelay(uuid);
         boolean instant = config.isHomeInstantTeleport(uuid);
         boolean moveCancel = config.isHomeMoveCancelEnabled(uuid);
 
         long now = System.currentTimeMillis();
 
-        // Cooldown-Check
+        // Cooldown
         if (cooldown > 0) {
             Long last = lastTeleport.get(uuid);
             if (last != null && (now - last) < cooldown * 1000L) {
@@ -39,25 +41,25 @@ public class HomeTeleportLogic {
             }
         }
 
-        // Instant-TP ignoriert Delay
         if (instant) {
             delay = 0;
         }
 
-        // Sofort teleportieren
+        // Sofortiger Teleport
         if (delay <= 0) {
+            playStartEffects(player);
             player.teleport(home.getLocation());
+            playEndEffects(player);
             player.sendMessage("§aTeleportiert!");
-            lastTeleport.put(uuid, now);
+            lastTeleport.put(uuid, System.currentTimeMillis());
             if (handler != null) {
                 handler.setMoveCancel(uuid, false);
             }
             return;
         }
 
-        // Verzögerter Teleport
+        // Verzögerter Teleport mit Animation
         player.sendMessage("§eTeleportiere in " + delay + " Sekunden…");
-
         final int startDelay = delay;
         final boolean useMoveCancel = moveCancel && handler != null;
 
@@ -79,15 +81,17 @@ public class HomeTeleportLogic {
                     return;
                 }
 
-                // Abbruch durch Bewegung
+                // Move-Cancel
                 if (useMoveCancel && !handler.isMoveCancelled(uuid)) {
-                    // Handler hat bereits die Nachricht gesendet
+                    // Handler hat bereits Nachricht gesendet
                     cancel();
                     return;
                 }
 
                 if (time <= 0) {
+                    playStartEffects(player);
                     player.teleport(home.getLocation());
+                    playEndEffects(player);
                     player.sendMessage("§aTeleportiert!");
                     lastTeleport.put(uuid, System.currentTimeMillis());
                     if (useMoveCancel) {
@@ -97,14 +101,54 @@ public class HomeTeleportLogic {
                     return;
                 }
 
+                // Countdown-Message + Animation
                 player.sendMessage("§7Teleport in §e" + time + "§7s…");
+                spawnCountdownParticles(player);
                 time--;
             }
 
         }.runTaskTimer(plugin, 20, 20);
     }
 
-    // Statischer Helper für Listener
+    private void spawnCountdownParticles(Player player) {
+        player.getWorld().spawnParticle(
+                Particle.END_ROD,
+                player.getLocation().add(0, 1.0, 0),
+                10,
+                0.3,
+                0.4,
+                0.3,
+                0.01
+        );
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.3f, 1.8f);
+    }
+
+    private void playStartEffects(Player player) {
+        player.getWorld().spawnParticle(
+                Particle.END_ROD,
+                player.getLocation().add(0, 1.0, 0),
+                40,
+                0.5,
+                0.7,
+                0.5,
+                0.02
+        );
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.6f, 1.5f);
+    }
+
+    private void playEndEffects(Player player) {
+        player.getWorld().spawnParticle(
+                Particle.GLOW,
+                player.getLocation().add(0, 1.0, 0),
+                40,
+                0.7,
+                0.7,
+                0.7,
+                0.01
+        );
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.8f, 1.3f);
+    }
+
     public static void teleportPlayer(LucaCrafterPlugin plugin,
                                       HomeTeleportHandler handler,
                                       Player player,

@@ -90,6 +90,13 @@ commands:
     description: Admin-GUI für Homes
     usage: /homesadmin [Spieler]
     permission: lucacrafter.home.admin
+  
+  friend:
+    description: Verwalte deine Freunde
+    usage: /friend <add|remove> <Spieler>
+  friends:
+    description: Zeigt deine Freundesliste an
+    usage: /friends
 
 permissions:
   lucacrafter.baum.use:

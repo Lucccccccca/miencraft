@@ -29,39 +29,57 @@ public class HomeGUIListener implements Listener {
 
         Player p = (Player) e.getWhoClicked();
         Material mat = e.getCurrentItem().getType();
+        int slot = e.getRawSlot();
 
-        // ================= PARTIKEL TOGGLE ==================
-        if (e.getRawSlot() == 49) {
+        // Partikel toggle
+        if (slot == 48) {
             boolean now = plugin.getConfigManager().isHomeParticlesEnabled(p.getUniqueId());
             plugin.getConfigManager().setHomeParticlesEnabled(p.getUniqueId(), !now);
-            p.sendMessage("§aHome-Partikel sind nun: "
-                    + (!now ? "§aAktiv" : "§cDeaktiviert"));
+            p.sendMessage("§aHome-Partikel sind nun: " + (!now ? "§aAktiv" : "§cDeaktiviert"));
             p.openInventory(new HomeMainGUI(plugin, p).getInventory());
             return;
         }
 
+        // Hologramm toggle
+        if (slot == 50) {
+            boolean now = plugin.getConfigManager().isHomeHologramEnabled(p.getUniqueId());
+            plugin.getConfigManager().setHomeHologramEnabled(p.getUniqueId(), !now);
 
+            if (now) {
+                plugin.getHomeHologramManager().removeAll(p);
+                p.sendMessage("§cHome-Hologramme deaktiviert.");
+            } else {
+                plugin.getHomeHologramManager().refreshPlayer(p);
+                p.sendMessage("§aHome-Hologramme aktiviert.");
+            }
 
-        // ====== HOLOGRAMM toggle =======
-if (e.getRawSlot() == 50) {
-    boolean now = plugin.getConfigManager().isHomeHologramEnabled(p.getUniqueId());
-    plugin.getConfigManager().setHomeHologramEnabled(p.getUniqueId(), !now);
+            p.openInventory(new HomeMainGUI(plugin, p).getInventory());
+            return;
+        }
 
-    if (now) {
-        plugin.getHomeHologramManager().removeAll(p);
-        p.sendMessage("§cHome-Hologramme deaktiviert.");
-    } else {
-        plugin.getHomeHologramManager().refreshPlayer(p);
-        p.sendMessage("§aHome-Hologramme aktiviert.");
-    }
+        // Sortier-Modus wechseln
+        if (slot == 46) {
+            HomeSortMode current = plugin.getConfigManager().getHomeSortMode(p.getUniqueId());
+            HomeSortMode next;
+            switch (current) {
+                case NAME:
+                    next = HomeSortMode.DISTANCE;
+                    break;
+                case DISTANCE:
+                    next = HomeSortMode.WORLD;
+                    break;
+                case WORLD:
+                default:
+                    next = HomeSortMode.NAME;
+                    break;
+            }
+            plugin.getConfigManager().setHomeSortMode(p.getUniqueId(), next);
+            p.sendMessage("§aSortierung geändert zu: §e" + next.name());
+            p.openInventory(new HomeMainGUI(plugin, p).getInventory());
+            return;
+        }
 
-    p.openInventory(new HomeMainGUI(plugin, p).getInventory());
-    return;
-}
-
-
-
-        // ================= HOME AKTIONEN ==================
+        // Home Aktionen
         if (mat == Material.ENDER_PEARL) {
 
             String name = ChatColor.stripColor(
@@ -74,9 +92,20 @@ if (e.getRawSlot() == 50) {
 
             if (h == null) return;
 
+            // Shift + Rechtsklick → Privacy ändern
+            if (e.isRightClick() && e.isShiftClick()) {
+                HomePrivacy current = plugin.getConfigManager().getHomePrivacy(p.getUniqueId(), name);
+                HomePrivacy next = current.next();
+                plugin.getConfigManager().setHomePrivacy(p.getUniqueId(), name, next);
+                p.sendMessage("§aPrivatsphäre für §e" + name + " §aist nun: " + next.getDisplayName());
+                p.openInventory(new HomeMainGUI(plugin, p).getInventory());
+                return;
+            }
+
             // Rechtsklick → Home löschen
             if (e.isRightClick()) {
                 plugin.getHomeManager().deleteHome(p.getUniqueId(), name.toLowerCase());
+                plugin.getHomeHologramManager().removeHologram(p, name);
                 p.sendMessage("§cHome §e" + name + " §cwurde gelöscht.");
                 p.openInventory(new HomeMainGUI(plugin, p).getInventory());
                 return;
@@ -86,7 +115,6 @@ if (e.getRawSlot() == 50) {
             if (e.isLeftClick()) {
                 p.closeInventory();
                 HomeTeleportLogic.teleportPlayer(plugin, teleportHandler, p, h);
-                return;
             }
         }
     }

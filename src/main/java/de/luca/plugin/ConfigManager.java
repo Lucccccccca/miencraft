@@ -440,6 +440,44 @@ public void setHomeHologramEnabled(UUID uuid, boolean enabled) {
 }
 
 
+// Sortiermodus
+public HomeSortMode getHomeSortMode(UUID uuid) {
+    FileConfiguration cfg = plugin.getConfig();
+    String raw = cfg.getString("players." + uuid + ".home.sort", "NAME");
+    try {
+        return HomeSortMode.valueOf(raw.toUpperCase());
+    } catch (IllegalArgumentException e) {
+        return HomeSortMode.NAME;
+    }
+}
+
+public void setHomeSortMode(UUID uuid, HomeSortMode mode) {
+    FileConfiguration cfg = plugin.getConfig();
+    cfg.set("players." + uuid + ".home.sort", mode.name());
+    plugin.saveConfig();
+}
+
+
+
+// Home-Privacy
+public HomePrivacy getHomePrivacy(UUID uuid, String homeName) {
+    FileConfiguration cfg = plugin.getConfig();
+    String raw = cfg.getString("players." + uuid + ".home." + homeName.toLowerCase() + ".privacy", "PRIVATE");
+    try {
+        return HomePrivacy.valueOf(raw.toUpperCase());
+    } catch (IllegalArgumentException e) {
+        return HomePrivacy.PRIVATE;
+    }
+}
+
+public void setHomePrivacy(UUID uuid, String homeName, HomePrivacy privacy) {
+    FileConfiguration cfg = plugin.getConfig();
+    cfg.set("players." + uuid + ".home." + homeName.toLowerCase() + ".privacy", privacy.name());
+    plugin.saveConfig();
+}
+
+
+
 
     // =============================
     // Util

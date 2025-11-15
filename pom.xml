@@ -43,7 +43,7 @@
                 <configuration>
                     <release>21</release>
                     <compilerArgs>
-                        <arg>-Xlint:none</arg>
+                        <arg>-Xlint:none</arg>1.21.
                     </compilerArgs>
                 </configuration>
             </plugin>

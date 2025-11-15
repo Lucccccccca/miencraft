@@ -25,7 +25,14 @@ public final class LucaCrafterPlugin extends JavaPlugin {
     private HomeTeleportLogic homeTeleportLogic;
     private HomeTeleportHandler homeTeleportHandler;
     private HomeHologramManager homeHologramManager;
+    private FriendManager friendManager;
+    
     // ======= GETTERS ========
+
+
+    public FriendManager getFriendManager() {
+    return friendManager;
+    }
 
     public HomeHologramManager getHomeHologramManager() {
     return homeHologramManager;
@@ -118,6 +125,8 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new PrefixGUIListener(this, prefixChatListener), this);
         pm.registerEvents(prefixChatListener, this);
+        friendManager = new FriendManager(this);
+
 
         // ===============================
         //  HOME-COMMANDS & LISTENER
@@ -159,7 +168,8 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         }
         pm.registerEvents(erzCommand, this);
         pm.registerEvents(new ErzListener(this, erzCommand), this);
-
+        pm.registerEvents(new de.luca.plugin.FriendMainListener(this), this);
+    pm.registerEvents(new de.luca.plugin.FriendListListener(this), this);
         // ===============================
         //  STATS-SYSTEM
         // ===============================
@@ -175,9 +185,18 @@ public final class LucaCrafterPlugin extends JavaPlugin {
         pm.registerEvents(new FarmProtectListener(this), this);
         pm.registerEvents(new AntiCreeperListener(this), this);
 
+        getServer().getPluginManager().registerEvents(new FriendGUIListener(this), this);
+        getServer().getPluginManager().registerEvents(new FriendHomesGUIListener(this, homeTeleportHandler), this);
+
 
         homeHologramManager = new HomeHologramManager(this);
         pm.registerEvents(new HomeHologramJoinListener(this), this);
+        if (getCommand("friend") != null) {
+    getCommand("friend").setExecutor(new FriendCommand(this));
+}
+if (getCommand("friends") != null) {
+    getCommand("friends").setExecutor(new FriendCommand(this));
+}
 
 
         // ===============================
