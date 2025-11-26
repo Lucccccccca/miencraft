@@ -1,8 +1,8 @@
 package de.luca.plugin;
 
-import de.luca.plugin.LucaCrafterPlugin;
 import org.bukkit.entity.Player;
-import org.bukkit.event.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class FriendMainListener implements Listener {
@@ -25,21 +25,31 @@ public class FriendMainListener implements Listener {
         int slot = e.getRawSlot();
 
         switch (slot) {
-            case 10: // Anfragen
-                p.openInventory(new FriendListGUI(plugin, p, FriendListType.REQUESTS).getInventory());
+
+            case 10: // Freunde Liste (Online)
+                p.openInventory(FriendListGUI.build(plugin, p, FriendListType.ONLINE));
                 break;
-            case 12: // Online
-                p.openInventory(new FriendListGUI(plugin, p, FriendListType.ONLINE).getInventory());
+
+            case 12: // Online Freunde
+                p.openInventory(FriendListGUI.build(plugin, p, FriendListType.ONLINE));
                 break;
-            case 14: // Offline
-                p.openInventory(new FriendListGUI(plugin, p, FriendListType.OFFLINE).getInventory());
+
+            case 14: // Offline Freunde
+                p.openInventory(FriendListGUI.build(plugin, p, FriendListType.OFFLINE));
                 break;
+
             case 16: // Favoriten
-                p.openInventory(new FriendListGUI(plugin, p, FriendListType.FAVORITES).getInventory());
+                p.openInventory(FriendListGUI.build(plugin, p, FriendListType.FAVORITES));
                 break;
+
             case 22: // Blockierte
-                p.openInventory(new FriendListGUI(plugin, p, FriendListType.BLOCKED).getInventory());
+                p.openInventory(FriendListGUI.build(plugin, p, FriendListType.BLOCKED));
                 break;
+
+            case 13: // Freund hinzufügen
+                p.openInventory(FreundeAddGUI.build(p)); 
+                break;
+
             default:
                 break;
         }

@@ -1,7 +1,9 @@
 package de.luca.plugin;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -13,31 +15,84 @@ public class JoinListener implements Listener {
 
     private final Random random = new Random();
 
-    // 💬 Zufällige Join-Nachrichten mit Farben & Emojis
+    // ⭐ Zufällige JOIN-Nachrichten
     private final List<String> joinMessages = List.of(
-            ChatColor.GOLD + "hat den Ofen angeschmissen 🔥",
-            ChatColor.AQUA + "fliegt jetzt los 🚀",
-            ChatColor.GREEN + "baut wieder Unsinn 🧱",
-            ChatColor.LIGHT_PURPLE + "sucht erstmal Kaffee ☕",
-            ChatColor.YELLOW + "macht jetzt ernst 💪",
-            ChatColor.RED + "ist auf Krawall gebürstet 😈",
-            ChatColor.BLUE + "hat den Server gefunden 🌍",
-            ChatColor.DARK_AQUA + "kommt mit guten Vibes 😎",
-            ChatColor.DARK_GREEN + "bringt Glück 🍀",
-            ChatColor.GOLD + "kommt aus dem Nether zurück 🔥",
-            ChatColor.LIGHT_PURPLE + "hat heute was vor 💫",
-            ChatColor.DARK_PURPLE + "hat die Macht gespürt ⚡",
-            ChatColor.AQUA + "ist wieder da – Applaus bitte 👏",
-            ChatColor.GREEN + "kommt, um Chaos zu stiften 💥",
-            ChatColor.GOLD + "will nur kurz was testen 😏",
-            ChatColor.RED + "hat TNT gesehen 💣",
-            ChatColor.YELLOW + "ist bereit für Abenteuer 🗺️",
-            ChatColor.BLUE + "hat das Licht gesehen 💡",
-            ChatColor.DARK_RED + "kommt mit dunkler Energie 🌑",
-            ChatColor.WHITE + "hat einfach Lust auf Blöcke 🧱"
+
+            // 🤣 Lustig
+            "ist bereit für absolute Chaos-Architektur 🤡",
+            "kommt rein wie ein Creeper in dein Haus 💥",
+            "fragt sich, warum der Server so gut riecht 🍞",
+            "hat den Bauplan für das Ender-Chaos dabei 📐😈",
+            "hat die Tür offen gelassen — oops 😳🚪",
+            "hat mehr Items verloren als XP verdient 😂",
+            "hat aus Versehen ein Dorf verkauft 🏘️💸",
+            "ist AFK bevor er überhaupt joined 💤",
+            "denkt immer noch, dass Dirt selten ist 🟫⭐",
+
+            // 😈 Gefährlich
+            "hat TNT in der Hand — rennt lieber 💣🔥",
+            "kommt mit Wut und Wither-Power zurück ☠️💀",
+            "hat heute keine Gnade 😡⚡",
+            "hat Lava-Eimer geladen 🪣🔥",
+            "spawnt heute vielleicht den Wither… vielleicht 😈",
+            "kommt mit der Macht des Enderdrachens 🐉💫",
+
+            // 😎 Cool
+            "ist mit maximaler Geschwindigkeit gelandet 🚀",
+            "hat den Server betreten wie ein Boss 😎",
+            "ist ready für neue Abenteuer 🗺️",
+            "bringt heute Ordnung in die Blöcke 🧱✨",
+            "hat Style, Skill und einen Goldhelm 😏👑",
+
+            // 🎲 WTF
+            "hat einen Dorfbewohner bestochen 🧑‍🌾💵",
+            "ist aus Versehen durch den Nether gefallen 🔥🕳️",
+            "kommt aus der Zukunft zurück 🤖⏳",
+            "wurde von einem Lama angespuckt 🦙💦",
+            "hat gerade ein Schaf angeschrien 🐑😡",
+
+            // 🌌 Mystisch
+            "erwacht aus tiefem Minecraft-Schlaf 🌙✨",
+            "hat kosmische Energie gesammelt 🌌⚡",
+            "kommt mit einer Aura der Stärke zurück 🔮💫",
+
+            // 🌿 Natur
+            "kommt, um Blumen zu pflücken 🌸",
+            "bringt entspannte Vibes 🌿✨",
+            "hat ein paar Fische gefangen 🐟🎣",
+
+            // 🧠 Smart
+            "kommt mit neuen Konstruktionen im Kopf 🧠📐",
+            "hat ein Redstone-Meisterwerk geplant 🔴⚡",
+
+            // 🐾 Tiere
+            "bringt eine Armee von Katzen mit 🐱🐱🐱",
+            "hat ein neues Haustier gefunden 🐶",
+
+            // 💸 Wirtschaft
+            "verkauft heute billige Diamanten — aber nur heute 💎💸",
+
+            // 🧱 Builder
+            "hat ein neues Mega-Projekt gestartet 🧱🏗️",
+
+            // 🧭 Abenteuer
+            "hat neue Höhlen entdeckt 🕳️✨",
+
+            // 🔥 Kampf
+            "hat drei Creeper gleichzeitig besiegt 💣💚",
+
+            // 🤖 Technik
+            "hat seine Redstone-Maschine neu gestartet ⚙️🔴",
+
+            // 💫 Prestige
+            "kommt wie ein König zurück 👑",
+
+            // 🧙 Fantasy
+            "kommt als Zauberer der zweiten Stufe zurück 🧙✨"
     );
 
-    // 🚪 Zufällige Leave-Nachrichten mit Farben & Emojis
+
+    // ⭐ Leave-Messages
     private final List<String> leaveMessages = List.of(
             ChatColor.GRAY + "hat den Server verlassen, um Kaffee zu holen ☕",
             ChatColor.DARK_PURPLE + "hat sich heimlich davongeschlichen 😏",
@@ -51,17 +106,28 @@ public class JoinListener implements Listener {
             ChatColor.WHITE + "hat sich leise verabschiedet 👋"
     );
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        String playerName = ChatColor.GOLD + event.getPlayer().getName() + ChatColor.RESET;
-        String randomText = joinMessages.get(random.nextInt(joinMessages.size()));
-        event.setJoinMessage(ChatColor.GRAY + "✨ " + playerName + " " + randomText);
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onJoin(PlayerJoinEvent event) {
+        Player p = event.getPlayer();
+
+        // ⭐ zufällige öffentliche Nachricht
+        String text = joinMessages.get(random.nextInt(joinMessages.size()));
+        event.setJoinMessage("§7✨ §e" + p.getName() + " " + text);
+
+        // ⭐ private Box
+        p.sendMessage("§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        p.sendMessage("                  §e💡 §6§lServer Info");
+        p.sendMessage(" ");
+        p.sendMessage("§7• §bFreunde-Menü§7 – Verwalte Freunde & Favoriten");
+        p.sendMessage("§7• §aHome-System§7 – Setze Homes & teleporte sicher");
+        p.sendMessage("§7• §6Erz- & Baum-System§7 – Sammle Ressourcen leichter");
+        p.sendMessage("§fNutze §a/hilfe §ffür alle Systeme und Tutorials!");
+        p.sendMessage("§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        String playerName = ChatColor.GOLD + event.getPlayer().getName() + ChatColor.RESET;
-        String randomText = leaveMessages.get(random.nextInt(leaveMessages.size()));
-        event.setQuitMessage(ChatColor.DARK_GRAY + "🚪 " + playerName + " " + randomText);
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onQuit(PlayerQuitEvent event) {
+        String text = leaveMessages.get(random.nextInt(leaveMessages.size()));
+        event.setQuitMessage("§7🚪 §e" + event.getPlayer().getName() + " " + text);
     }
 }

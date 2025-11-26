@@ -97,7 +97,14 @@ commands:
   friends:
     description: Zeigt deine Freundesliste an
     usage: /friends
-
+  freunde:
+    description: Öffnet das Freunde-Menü und verwaltet Freundschaften (Deutsch)
+    usage: /freunde
+    aliases: [friends]
+    permission: "lucaplugin.freunde"
+    permission-message: "§cDazu hast du keine Berechtigung."
+  hilfe:
+    description: Zeigt das Hilfe-Menü
 permissions:
   lucacrafter.baum.use:
     description: Erlaubt das Öffnen des Baum-Systems
